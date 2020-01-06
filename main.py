@@ -40,13 +40,13 @@ def start(bot, update):
 def help(bot, update):
 	"""Send a message when the command /help is issued."""
 	update.message.reply_text(
-		u'You can send me /gen <list of words> and I will send you the most popular associated hashtags.\n'
+		u'You can send me /gen <list of words> and I will send you the most popular associated hashtags.\nE.g. try to send me "/gen lake mountains sky" and I will send you the associated tags\n'
 		u'(max ' + str(MAX_WORDS) + ' words)\n'
 		u'You can send me "random" as first word if you want hashtags in random order')
 
 def echo(bot, update):
 	"""Echo the user message."""
-	update.message.reply_text(update.message.text + " is not a valid command, please send me /help to know how I can help you")
+	update.message.reply_text(update.message.text + ' is not a valid command, please send me /help to know how I can help you.\nE.g. send me "/gen lake mountains sky" and I will send you the associated tags')
 
 def error(bot, update, error):
 	"""Log Errors caused by Updates."""
@@ -56,7 +56,7 @@ def error(bot, update, error):
 def hashtags(bot, update, args):
 	try:
 		if(len(args) == 0):
-			update.message.reply_text('Please, send me at least on word')
+			update.message.reply_text('Please, send me at least on word.\nE.g. send me "/gen lake mountains sky" and I will send you the associated tags')
 			logger.debug('No tags')
 			return
 
@@ -77,13 +77,13 @@ def hashtags(bot, update, args):
 		hashtags = generate_hashtags(tags, NUM_HASHTAGS, sort, DEBUG)
 
 		if(len(hashtags) == 0):
-			update.message.reply_text('It is not possible to generate hashtags from your words, please, send me another words')
+			update.message.reply_text('It is not possible to generate hashtags from your words, please, send me another words.\nE.g. send me "/gen lake mountains sky" and I will send you the associated tags')
 			return
 
 		update.message.reply_text("•\n•\n•\n•\n•\n" + " ".join(hashtags))
 
 	except (IndexError, ValueError):
-		update.message.reply_text("I did not understand, please send me /help to know how I can help you")
+		update.message.reply_text('I did not understand, please send me /help to know how I can help you.\nE.g. send me "/gen lake mountains sky" and I will send you the associated tags')
 
 def generate_hashtags(tags, limit=3, sort='top', log_tags=True):
 	"""Generate smart hashtags based on https://displaypurposes.com/"""
